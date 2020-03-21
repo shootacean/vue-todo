@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+    integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Vue ToDo</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="app">
+      <h1>Vue ToDo</h1>
+      <table class="pure-table">
+        <thead>
+          <tr>
+            <td>
+              <input
+                type="text"
+                class="pure-input"
+                placeholder="新しいToDo"
+                v-model="newTodo"
+                v-on:keydown.enter="addTodo(newTodo)"
+              >
+            </td>
+            <td>
+              <button
+                class="pure-button pure-button-primary"
+                v-on:click="addTodo(newTodo)"
+              >追加</button>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(todo, i) in todos">
+            <td>
+              <input
+                type="text"
+                v-on:change="updateTodo(i, todo)"
+                v-bind:value="todo"
+              >
+            </td>
+            <td>
+              <button
+                class="pure-button pure-button-error"
+                v-on:click="deleteTodo(i)"
+              >削除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        newTodo: '',
+        todos: [
+          'todo 1',
+          'todo 2',
+          'todo 3',
+        ],
+      },
+      methods: {
+        addTodo: function (title) {
+          if (!title.trim()) return false; 
+          this.todos.push(title);
+          this.newTodo = '';
+        },
+        updateTodo: function (index, title) {
+          this.todos.splice(index, 1, title);
+        },
+        deleteTodo: function (index) {
+          this.todos.splice(index, 1);
+        },
+      }
+    });
+  </script>
+</body>
+
+</html>
